@@ -16,6 +16,8 @@ import java.io.BufferedWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     //private static Handler mHandler;
@@ -27,6 +29,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView mytext1, mytext2, mytext3, mytext4, mytext5, servertext1, servertext2, servertext3, servertext4, servertext5;
     private static int cnt=1; //버튼 횟수, 텍스트 몇번에 써야하는지 알기 위해
 
+    //시간 출력
+    long now=System.currentTimeMillis();
+    Date date=new Date(now);
+    SimpleDateFormat dateFormat=new SimpleDateFormat("hh:mm:ss");
+    String getTime=dateFormat.format(date);
     /*
     버튼을 클릭했을 때
     1. editText의 서버 IP 주소와 전송할 데이터 가져오기
@@ -60,7 +67,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 str= editText.getText().toString();
-                mytext1.setText(str);
+                if(cnt==1){
+                    mytext1.setText("("+getTime+") "+str);
+                }
+                else if(cnt==2){
+                    mytext2.setText("("+getTime+") "+str);
+                }
+                else if(cnt==3){
+                    mytext3.setText("("+getTime+") "+str);
+                }
+                else if(cnt==4){
+                    mytext4.setText("("+getTime+") "+str);
+                }
+                else
+                    mytext5.setText("("+getTime+") "+str);
+
 
                 SocketThread thread=new SocketThread(add, str);
                 thread.start();
@@ -78,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         public SocketThread(String host, String data){
             this.host=host;
             this.data=data;
-
         }
 
         @Override
@@ -99,7 +119,22 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(MainActivity.this, "서버 응답 : " + res, Toast.LENGTH_LONG).show();
-                        servertext1.setText(data);
+
+                        if(cnt==1){
+                            servertext1.setText("("+getTime+") "+data);
+                        }
+                        else if(cnt==2){
+                            servertext2.setText("("+getTime+") "+data);
+                        }
+                        else if(cnt==3){
+                            servertext3.setText("("+getTime+") "+data);
+                        }
+                        else if(cnt==4){
+                            servertext4.setText("("+getTime+") "+data);
+                        }
+                        else
+                            servertext5.setText("("+getTime+") "+data);
+
                     }
                 });
 
